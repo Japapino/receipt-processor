@@ -1,23 +1,14 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
+import { CreateReceiptDto } from './dto/create-receipt.dto';
 
 @Controller('receipts')
 export class ReceiptsController {
   constructor(private readonly receiptsService: ReceiptsService) {}
 
   @Post('process')
-  process(
-    @Body('retailer') retailer: string,
-    @Body('purchaseDate') purchaseDate: string,
-    @Body('purchaseTime') purchaseTime: string,
-    @Body('items') items: [],
-  ) {
-    const generatedId = this.receiptsService.create(
-      retailer,
-      purchaseDate,
-      purchaseTime,
-      items,
-    );
+  process(@Body() createReceiptDto: CreateReceiptDto) {
+    const generatedId = this.receiptsService.create(createReceiptDto);
 
     return { id: generatedId };
   }

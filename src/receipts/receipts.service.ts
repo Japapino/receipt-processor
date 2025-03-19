@@ -1,28 +1,24 @@
 import { Injectable } from '@nestjs/common';
-
-import { Receipt } from './models/receipt.model';
+import { Receipt } from './entities/receipt.entity';
+import { ReceiptFactoryService } from './receipt.factory.service';
+import { CreateReceiptDto } from './dto/create-receipt.dto';
 
 @Injectable()
 export class ReceiptsService {
-  Receipt: Receipt;
+  // constructor to save data goes here
+  constructor(private receiptFactory: ReceiptFactoryService) {}
 
-  create(
-    retailer: string,
-    purchaseDate: string,
-    purchaseTime: string,
-    items: [],
-  ): string {
-    const id: string = `${retailer}-${purchaseTime}`;
+  create(receiptDto: CreateReceiptDto): string {
+    // create model
+    const newReceipt: Receipt =
+      this.receiptFactory.createNewReceipt(receiptDto);
 
-    const newReceipt = new Receipt(
-      id,
-      retailer,
-      purchaseDate,
-      purchaseTime,
-      items,
-    );
+    // calculate point total
+    // let pointsEarned: number = calculatePoints(newReceipt);
 
-    return newReceipt.id;
+    // create entity and save receipt
+
+    return newReceipt.retailer;
   }
 
   findAll() {
