@@ -1,11 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReceiptDto } from './dto/create-receipt.dto';
-import { UpdateReceiptDto } from './dto/update-receipt.dto';
+
+import { Receipt } from './models/receipt.model';
 
 @Injectable()
 export class ReceiptsService {
-  create(createReceiptDto: CreateReceiptDto) {
-    return 'This action adds a new receipt';
+  Receipt: Receipt;
+
+  create(
+    retailer: string,
+    purchaseDate: string,
+    purchaseTime: string,
+    items: [],
+  ): string {
+    const id: string = `${retailer}-${purchaseTime}`;
+
+    const newReceipt = new Receipt(
+      id,
+      retailer,
+      purchaseDate,
+      purchaseTime,
+      items,
+    );
+
+    return newReceipt.id;
   }
 
   findAll() {
@@ -14,13 +31,5 @@ export class ReceiptsService {
 
   findOne(id: number) {
     return `This action returns a #${id} receipt`;
-  }
-
-  update(id: number, updateReceiptDto: UpdateReceiptDto) {
-    return `This action updates a #${id} receipt`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} receipt`;
   }
 }
